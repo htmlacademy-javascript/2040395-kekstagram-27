@@ -15,10 +15,14 @@ const DESCRIPTIONS = [
   'Отлично поработали. Теперь можно и отдохнуть.',
 ];
 
-const MESSAGETEXT = [
+const MESSAGES = [
   'Всё отлично!',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
 ];
+
+let indexes = [];
+
+const checkTextLength = (text, maxlength) => text.length <= maxlength;
 
 const getRandomInteger = (min, max) => {
   if (min < 0 || max < 0) {
@@ -32,34 +36,43 @@ const getRandomInteger = (min, max) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
-const checkTextLength = (text, maxlength) => text.length <= maxlength;
-checkTextLength ('Новый комментарий', 140);
+function getUniqueNumberArray(count) {
+  const uniqueNumbers = new Set();
+  while (uniqueNumbers.size < count) {
+    uniqueNumbers.add(getRandomInteger(1, count));
+  }
+  return [...uniqueNumbers];
+}
 
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayItem = (items) => items[getRandomInteger(0, items.length - 1)];
 
-const addPhotos = () => {
-
-  const addComment = () => {
-    const comments = [];
-    for (let i = 0; i < COMMENT_COUNT; i++) {
-      comments.push({
-        id: getRandomInteger(1, 999),
-        avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-        message: getRandomArrayElement(MESSAGETEXT),
-        name: getRandomArrayElement(NAMES),
-      });
-    }
-    return comments;
-  };
-  const addPhoto = () => ({
-    id: getRandomInteger(1, 25),
-    url: `photos/${getRandomInteger(1, 25)}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomInteger(15, 200),
-    comments: addComment(),
-  });
-
-  Array.from({length: PHOTO_COUNT}, addPhoto);
+const getCommentArray = () => {
+  const comments = [];
+  for (let i = 0; i < COMMENT_COUNT; i++) {
+    comments.push({
+      id: indexes[i],
+      avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+      message: getRandomArrayItem(MESSAGES),
+      name: getRandomArrayItem(NAMES),
+    });
+  }
+  return comments;
 };
 
-addPhotos();
+const getPhotoArray = () => {
+  const photos = [];
+  for (let i = 0; i < PHOTO_COUNT; i++) {
+    photos.push({
+      id: i + 1,
+      url: `photos/${i + 1}.jpg`,
+      description: getRandomArrayItem(DESCRIPTIONS),
+      likes: getRandomInteger(15, 200),
+      comments: getCommentArray(),
+    });
+  }
+  return photos;
+};
+
+checkTextLength ('Новый комментарий', 140);
+indexes = getUniqueNumberArray(COMMENT_COUNT);
+getPhotoArray();
