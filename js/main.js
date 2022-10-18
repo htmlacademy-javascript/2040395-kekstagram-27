@@ -1,3 +1,3 @@
-import {getPhotoArray} from './data.js';
+import {renderPreviews} from './render-previews.js';
 
-getPhotoArray();
+renderPreviews();
