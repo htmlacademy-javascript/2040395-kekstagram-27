@@ -1,13 +1,13 @@
-import { createPhotoItem } from './photo-item.js';
+import {createPhotoItem} from './photo-item.js';
 
 const userPhotoList = document.querySelector('.pictures');
 
-const renderPreviews = (array) => {
-  const pictures = [];
-  for (let i = 0; i < array.length; i++) {
-    pictures.push(createPhotoItem(array[i]));
+const renderPreviews = (pictures) => {
+  const previews = [];
+  for (let i = 0; i < pictures.length; i++) {
+    previews.push(createPhotoItem(pictures[i]));
   }
-  userPhotoList.append(...pictures);
+  userPhotoList.append(...previews);
 };
 
-export {renderPreviews};
+export {renderPreviews, userPhotoList};

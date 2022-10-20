@@ -1,3 +1,5 @@
 const checkTextLength = (text, maxlength) => text.length <= maxlength;
 
-export {checkTextLength};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {checkTextLength, isEscapeKey};
