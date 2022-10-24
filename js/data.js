@@ -53,4 +53,4 @@ const getPhotoArray = () => {
 
 indexes = getUniqueNumberArray(COMMENT_COUNT);
 
-export {getPhotoArray, getCommentArray};
+export {getPhotoArray};
