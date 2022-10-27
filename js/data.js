@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayItem, getUniqueNumberArray} from './random.js';
+import { getRandomInteger, getRandomArrayItem, getUniqueNumberArray } from './random.js';
 
 const PHOTO_COUNT = 25;
 
@@ -53,4 +53,4 @@ const getPhotoArray = () => {
 
 indexes = getUniqueNumberArray(COMMENT_COUNT);
 
-export {getPhotoArray};
+export { getPhotoArray };

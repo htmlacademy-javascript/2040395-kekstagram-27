@@ -1,5 +1,4 @@
-import {isEscapeKey} from './util.js';
-import {renderComments, clearComments} from './popup-comment.js';
+import { renderComments, clearComments } from './popup-comments.js';
 
 const popupPhoto = document.querySelector('.big-picture');
 const bigPicture = popupPhoto.querySelector('.big-picture__img img');
@@ -13,22 +12,21 @@ const closeButton = document.querySelector('.big-picture__cancel');
 socialCommentCount.classList.add('hidden');
 commentsLoader.classList.add('hidden');
 
-const onPopupEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    popupPhoto.classList.add('hidden');
-  }
+let handleCloseButtonClick = null;
+
+const setBigPhotoCloseButtonClickHandler = (callback) => {
+  handleCloseButtonClick = callback;
 };
 
-const closePopup = () => {
+const onCloseButtonClick = (evt) => {
+  evt.preventDefault();
+
+  handleCloseButtonClick?.();
+};
+
+const hideBigPhoto = () => {
   popupPhoto.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onPopupEscKeydown);
-};
-
-
-const onCloseButtonClick = () => {
-  closePopup();
   closeButton.removeEventListener('click', onCloseButtonClick);
 };
 
@@ -43,10 +41,10 @@ const showBigPhoto = (photo) => {
   likesCount.textContent = photo.likes;
   socialCaption.textContent = photo.description;
   commentsCount.textContent = photo.comments.length;
-  openPopup();
 
   clearComments();
   renderComments(photo.comments);
+  openPopup();
 };
 
-export {showBigPhoto, onPopupEscKeydown};
+export { showBigPhoto, hideBigPhoto, setBigPhotoCloseButtonClickHandler };
