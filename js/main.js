@@ -1,3 +1,6 @@
-import {renderPreviews} from './render-previews.js';
+import { getPhotoArray } from './data.js';
+import { renderPreviews } from './gallery.js';
 
-renderPreviews();
+const photos = getPhotoArray();
+
+renderPreviews(photos);

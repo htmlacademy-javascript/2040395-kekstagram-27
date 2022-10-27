@@ -1,8 +1,8 @@
-import {getRandomInteger, getRandomArrayItem, getUniqueNumberArray} from './random.js';
+import { getRandomInteger, getRandomArrayItem, getUniqueNumberArray } from './random.js';
 
 const PHOTO_COUNT = 25;
 
-const COMMENT_COUNT = 7;
+const COMMENT_COUNT = 5;
 
 const NAMES = [
   'Дюймовочка',
@@ -53,4 +53,4 @@ const getPhotoArray = () => {
 
 indexes = getUniqueNumberArray(COMMENT_COUNT);
 
-export {getPhotoArray};
+export { getPhotoArray };

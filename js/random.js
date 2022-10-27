@@ -20,4 +20,4 @@ const getUniqueNumberArray = (count) => {
   return [...uniqueNumbers];
 };
 
-export {getRandomInteger, getRandomArrayItem, getUniqueNumberArray};
+export { getRandomInteger, getRandomArrayItem, getUniqueNumberArray };
