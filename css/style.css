@@ -710,7 +710,6 @@ main {
   border-radius: 5px;
 }
 
-
 /**
  * Кнопка для отправки изображения
  */
@@ -746,7 +745,20 @@ main {
   opacity: 0.3;
 }
 
+/* Обработки ошибок валидации */
 
+.img-upload__field-wrapper--invalid .text__input {
+  margin-bottom: 0;
+  background-color: #ff9595;
+}
+
+.error-message {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  max-width: 450px;
+  text-align: left;
+  text-transform: none;
+}
 /*
  * Кнопка для закрытия окна редактирования изображения
  */
