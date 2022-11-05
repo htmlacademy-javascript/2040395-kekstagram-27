@@ -1,6 +1,8 @@
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale.js';
+import { onFormChange, resetEffects } from './effects.js';
 
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const VALID_SYMBOLS = /^#[a-zа-яё0-9]/i;
 const MAX_HASHTAG_COUNT = 5;
 const MAX_COMMENT_LENGTH = 140;
 
@@ -19,38 +21,58 @@ const pristine = new Pristine(form, {
   errorTextClass: 'error-message'
 }, true);
 
-const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
-const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
-const hasUniqueTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
-};
-
-const validateTags = (value) => {
-  const tags = value
-    .trim()
-    .split(' ')
-    .filter((tag) => tag.trim().length);
-  return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
+const isValidTag = (value) => {
+  value.trim();
+  const tags = value.split(' ');
+  return tags.every((tag) => VALID_SYMBOLS.test(tag));
 };
 
 pristine.addValidator(
   hashtagField,
-  validateTags,
-  `Пожалуйста убедитесь, что:<br>
-    - хештег начинается с решетки (#)<br>
-    - хештег не содержит спецсимволы, эмодзи и знаки пунктуации<br>
-    - длина хештега не более 20 символов<br>
-    - количество хештегов не более ${MAX_HASHTAG_COUNT}<br>
-    - между хештегами стоят пробелы`
+  isValidTag,
+  `- хэш-тег должен начинаться с решетки (#)<br>
+    - хэш-тег не может содержать спецсимволы, эмодзи и знаки пунктуации<br>
+    - между хэш-тегами должны стоять пробелы`
 );
 
-const validateComments = () => {
-  const comment = commentField.value;
-  if (comment.length <= MAX_COMMENT_LENGTH) {
-    return true;
-  }
+const hasValidCount = (value) => {
+  value.trim();
+  const tags = value.split(' ');
+  return tags.length <= MAX_HASHTAG_COUNT;
 };
+
+pristine.addValidator(
+  hashtagField,
+  hasValidCount,
+  `- допустимое количество хэш-тегов: ${MAX_HASHTAG_COUNT}`
+);
+
+const hasValidLength = (value) => {
+  value.trim();
+  const tags = value.split(' ');
+  return tags.every((tag) => tag.trim().length <= 20);
+};
+
+pristine.addValidator(
+  hashtagField,
+  hasValidLength,
+  '- длина хэш-тега не более 20 символов'
+);
+
+const hasUniqueTags = (value) => {
+  value.trim();
+  const tags = value.split(' ');
+  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
+  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+};
+
+pristine.addValidator(
+  hashtagField,
+  hasUniqueTags,
+  '- хэш-теги нечувствительны к регистру и не должны повторяться'
+);
+
+const validateComments = () => commentField.value.length <= MAX_COMMENT_LENGTH;
 
 pristine.addValidator(
   commentField,
@@ -64,29 +86,22 @@ const onFormSubmit = (evt) => {
   }
 };
 
-let handleCancelButtonClick = null;
-
-const setCancelButtonClickHandler = (callback) => {
-  handleCancelButtonClick = callback;
-};
-
-const onCancelButtonClick = (evt) => {
-  evt.preventDefault();
-
-  handleCancelButtonClick?.();
-};
-
 const showModal = () => {
   uploadModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  cancelButton.addEventListener('click', onCancelButtonClick);
 };
 
 const hideModal = () => {
-  form.reset();
-  pristine.reset();
   uploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  resetScale();
+  resetEffects();
+  form.reset();
+  pristine.reset();
+};
+
+const onCancelButtonClick = () => {
+  hideModal();
   cancelButton.removeEventListener('click', onCancelButtonClick);
 };
 
@@ -101,18 +116,11 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const setModalHandlers = () => {
+fileInput.addEventListener('change', () => {
+  showModal();
+  cancelButton.addEventListener('click', onCancelButtonClick);
+  document.addEventListener('keydown', onPopupEscKeydown);
+});
 
-  fileInput.addEventListener('change', () => {
-    showModal();
-    setCancelButtonClickHandler(() => {
-      hideModal();
-      document.removeEventListener('keydown', onPopupEscKeydown);
-    });
-    document.addEventListener('keydown', onPopupEscKeydown);
-  });
-
-  form.addEventListener('submit', onFormSubmit);
-};
-
-setModalHandlers();
+form.addEventListener('change', onFormChange);
+form.addEventListener('submit', onFormSubmit);
