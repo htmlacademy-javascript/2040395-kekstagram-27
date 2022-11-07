@@ -8,9 +8,9 @@ const biggerButton = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
 const image = document.querySelector('.img-upload__preview');
 
-const getScaleValue = (n = 1) => {
+const getScaleValue = (stepOperator = 1) => {
   const currentValue = parseInt(scaleInput.value, 10);
-  let newValue = currentValue + SCALE_STEP * n;
+  let newValue = currentValue + SCALE_STEP * stepOperator;
   if (newValue < SCALE_MIN) {
     newValue = SCALE_MIN;
   } else if (newValue > SCALE_MAX) {

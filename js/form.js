@@ -4,6 +4,7 @@ import { onFormChange, resetEffects } from './effects.js';
 
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]/i;
 const MAX_HASHTAG_COUNT = 5;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_COMMENT_LENGTH = 140;
 
 const form = document.querySelector('.img-upload__form');
@@ -50,13 +51,13 @@ pristine.addValidator(
 const hasValidLength = (value) => {
   value.trim();
   const tags = value.split(' ');
-  return tags.every((tag) => tag.trim().length <= 20);
+  return tags.every((tag) => tag.trim().length <= MAX_HASHTAG_LENGTH);
 };
 
 pristine.addValidator(
   hashtagField,
   hasValidLength,
-  '- длина хэш-тега не более 20 символов'
+  `- длина хэш-тега не более ${MAX_HASHTAG_LENGTH} символов`
 );
 
 const hasUniqueTags = (value) => {
@@ -100,11 +101,6 @@ const hideModal = () => {
   pristine.reset();
 };
 
-const onCancelButtonClick = () => {
-  hideModal();
-  cancelButton.removeEventListener('click', onCancelButtonClick);
-};
-
 const isFieldFocused = () => document.activeElement === hashtagField || document.activeElement === commentField;
 
 const onPopupEscKeydown = (evt) => {
@@ -114,6 +110,12 @@ const onPopupEscKeydown = (evt) => {
     hideModal();
     document.removeEventListener('keydown', onPopupEscKeydown);
   }
+};
+
+const onCancelButtonClick = () => {
+  hideModal();
+  cancelButton.removeEventListener('click', onCancelButtonClick);
+  document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
 fileInput.addEventListener('change', () => {

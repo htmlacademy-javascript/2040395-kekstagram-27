@@ -1,8 +1,3 @@
-const image = document.querySelector('.img-upload__preview');
-const sliderElement = document.querySelector('.effect-level__slider');
-const effectInput = document.querySelector('.effect-level__value');
-const sliderRange = document.querySelector('.img-upload__effect-level');
-
 const EFFECTS = [
   {
     name: 'none',
@@ -55,10 +50,14 @@ const EFFECTS = [
 const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
 
-const isDefault = () => chosenEffect === DEFAULT_EFFECT;
+const image = document.querySelector('.img-upload__preview');
+const slider = document.querySelector('.effect-level__slider');
+const effectInput = document.querySelector('.effect-level__value');
+
+const isDefaultEffect = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {
-  sliderElement.noUiSlider.updateOptions({
+  slider.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
       max: chosenEffect.max,
@@ -67,16 +66,14 @@ const updateSlider = () => {
     step: chosenEffect.step,
   });
 
-  sliderElement.classList.remove('hidden');
-  sliderRange.classList.remove('hidden');
+  slider.classList.remove('hidden');
 
-  if (isDefault()) {
-    sliderElement.classList.add('hidden');
-    sliderRange.classList.add('hidden');
+  if (isDefaultEffect()) {
+    slider.classList.add('hidden');
   }
 };
 
-noUiSlider.create(sliderElement, {
+noUiSlider.create(slider, {
   range: {
     min: DEFAULT_EFFECT.min,
     max: DEFAULT_EFFECT.max,
@@ -98,10 +95,10 @@ const onSliderUpdate = () => {
   image.style.filter = 'none';
   image.className = '';
   effectInput.value = '';
-  if (isDefault()) {
+  if (isDefaultEffect()) {
     return;
   }
-  const sliderValue = sliderElement.noUiSlider.get();
+  const sliderValue = slider.noUiSlider.get();
   image.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
   image.classList.add(`effects__preview--${chosenEffect.name}`);
   effectInput.value = sliderValue;
@@ -112,6 +109,6 @@ const resetEffects = () => {
   updateSlider();
 };
 
-sliderElement.noUiSlider.on('update', onSliderUpdate);
+slider.noUiSlider.on('update', onSliderUpdate);
 
 export { onFormChange, resetEffects };
