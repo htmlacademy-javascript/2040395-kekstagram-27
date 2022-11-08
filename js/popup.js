@@ -1,16 +1,11 @@
-import { renderComments, clearComments } from './popup-comments.js';
+import {renderComments, clearComments} from './popup-comments.js';
 
 const popupPhoto = document.querySelector('.big-picture');
 const bigPicture = popupPhoto.querySelector('.big-picture__img img');
 const likesCount = popupPhoto.querySelector('.likes-count');
 const socialCaption = popupPhoto.querySelector('.social__caption');
 const commentsCount = popupPhoto.querySelector('.comments-count');
-const socialCommentCount = popupPhoto.querySelector('.social__comment-count');
-const commentsLoader = popupPhoto.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
-
-socialCommentCount.classList.add('hidden');
-commentsLoader.classList.add('hidden');
 
 let handleCloseButtonClick = null;
 
@@ -43,6 +38,7 @@ const showBigPhoto = (photo) => {
   commentsCount.textContent = photo.comments.length;
 
   clearComments();
+
   renderComments(photo.comments);
   openPopup();
 };

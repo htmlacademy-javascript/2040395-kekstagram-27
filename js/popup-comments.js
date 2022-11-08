@@ -12,12 +12,18 @@ const createComment = (photo) => {
   return comment;
 };
 
+const renderComment = (comment) => {
+  const message = createComment(comment);
+  return message;
+};
+
 const renderComments = (comments) => {
-  commentList.append(...comments.map(createComment));
+
+  commentList.append(...comments.map(renderComment));
 };
 
 const clearComments = () => {
   commentList.replaceChildren();
 };
 
-export { renderComments, clearComments };
+export {renderComments, clearComments};
