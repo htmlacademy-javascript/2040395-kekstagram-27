@@ -5,10 +5,10 @@ const createComment = (photo) => {
   const comment = commentTemplate.cloneNode(true);
   const {avatar, name, message} = photo;
   const avatarPicture = comment.querySelector('.social__picture');
+
   avatarPicture.src = avatar;
   avatarPicture.alt = name;
   comment.querySelector('.social__text').textContent = message;
-
   return comment;
 };
 
@@ -18,7 +18,6 @@ const renderComment = (comment) => {
 };
 
 const renderComments = (comments) => {
-
   commentList.append(...comments.map(renderComment));
 };
 
@@ -26,4 +25,4 @@ const clearComments = () => {
   commentList.replaceChildren();
 };
 
-export {renderComments, clearComments};
+export { renderComments, clearComments };

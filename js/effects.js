@@ -44,13 +44,13 @@ const EFFECTS = [
     max: 3,
     step: 0.1,
     unit: '',
-  }
+  },
 ];
 
 const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
 
-const image = document.querySelector('.img-upload__preview');
+const image = document.querySelector('.img-upload__preview img');
 const slider = document.querySelector('.effect-level__slider');
 const effectInput = document.querySelector('.effect-level__value');
 
@@ -108,6 +108,8 @@ const resetEffects = () => {
   chosenEffect = DEFAULT_EFFECT;
   updateSlider();
 };
+
+updateSlider();
 
 slider.noUiSlider.on('update', onSliderUpdate);
 

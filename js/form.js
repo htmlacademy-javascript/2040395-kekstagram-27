@@ -1,7 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
 import { onFormChange, resetEffects } from './effects.js';
-import './upload-validation.js';
 
 const form = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('#upload-file');
@@ -9,7 +8,6 @@ const uploadModal = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('#upload-cancel');
 const inputHashtag = form.querySelector('.text__hashtags');
 const inputComment = form.querySelector('.text__description');
-
 
 const showModal = () => {
   uploadModal.classList.remove('hidden');
@@ -29,7 +27,6 @@ const isFieldFocused = () => document.activeElement === inputHashtag || document
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt) && !isFieldFocused()) {
     evt.preventDefault();
-
     hideModal();
     document.removeEventListener('keydown', onPopupEscKeydown);
   }
