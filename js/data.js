@@ -2,7 +2,7 @@ import { getRandomInteger, getRandomArrayItem, getUniqueNumberArray } from './ra
 
 const PHOTO_COUNT = 25;
 
-const COMMENT_COUNT = 5;
+const COMMENT_COUNT = 20;
 
 const NAMES = [
   'Дюймовочка',

@@ -1,42 +1,24 @@
-import { showBigPhoto, hideBigPhoto, setBigPhotoCloseButtonClickHandler } from './popup.js';
-import { createPicture } from './picture.js';
-import { isEscapeKey } from './util.js';
+import { renderBigPicture } from './big-picture.js';
 
-const userPhotoList = document.querySelector('.pictures');
+const userPhoto = document.querySelector('.pictures');
+const userPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const onPopupEscKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-
-    hideBigPhoto();
-    document.removeEventListener('keydown', onPopupEscKeydown);
-  }
-};
-
-const renderPreview = (photo) => {
-  const picture = createPicture(photo);
-
-  picture.addEventListener('click', (evt) => {
-    if (!evt.target.closest('.picture')) {
-      return;
-    }
-
-    evt.preventDefault();
-
-    showBigPhoto(photo);
-    setBigPhotoCloseButtonClickHandler(() => {
-      hideBigPhoto();
-      document.removeEventListener('keydown', onPopupEscKeydown);
-    });
-
-    document.addEventListener('keydown', onPopupEscKeydown);
+const renderPictureContent = (photos) => {
+  const content = photos.map(({
+    url,
+    likes,
+    comments,
+    description
+  }) => {
+    const picture = userPhotoTemplate.cloneNode(true);
+    picture.querySelector('.picture__img').src = url;
+    picture.querySelector('.picture__likes').textContent = likes;
+    picture.querySelector('.picture__comments').textContent = comments.length;
+    picture.addEventListener('click', () => renderBigPicture(url, likes, comments, description));
+    return picture;
   });
 
-  return picture;
+  userPhoto.append(...content);
 };
 
-const renderPreviews = (photos) => {
-  userPhotoList.append(...photos.map(renderPreview));
-};
-
-export { renderPreviews };
+export { renderPictureContent };
