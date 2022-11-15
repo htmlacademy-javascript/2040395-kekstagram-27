@@ -45,3 +45,5 @@ fileInput.addEventListener('change', () => {
 });
 
 form.addEventListener('change', onFormChange);
+
+export { hideModal };

@@ -1,11 +1,14 @@
 import './gallery.js';
-import './form.js';
-import './validation.js';
+import { hideModal } from './form.js';
+import { setFormSubmit } from './validation.js';
 import './scale.js';
 import './effects.js';
-import { getPhotoArray } from './data.js';
 import { renderPictureContent } from './gallery.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
-const photos = getPhotoArray();
+getData((photos) => {
+  renderPictureContent(photos);
+}, showAlert);
 
-renderPictureContent(photos);
+setFormSubmit(hideModal);
