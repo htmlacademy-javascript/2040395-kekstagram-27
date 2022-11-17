@@ -1,14 +1,23 @@
 import './gallery.js';
-import { hideModal } from './form.js';
-import { setFormSubmit } from './validation.js';
+import './form.js';
+import './validation.js';
 import './scale.js';
 import './effects.js';
+import { hideModal, closeModal } from './form.js';
+import { setFormSubmit } from './validation.js';
 import { renderPictureContent } from './gallery.js';
 import { getData } from './api.js';
-import { showAlert } from './util.js';
+import { showLoadingMessage } from './message.js';
 
-getData((photos) => {
-  renderPictureContent(photos);
-}, showAlert);
+showLoadingMessage();
+getData(
+  (photos) => {
+    document.querySelector('.loading').classList.add('hidden');
+    renderPictureContent(photos);
+  },
+  () => {
+    showLoadingMessage();
+  }
+);
 
-setFormSubmit(hideModal);
+setFormSubmit(hideModal, closeModal);

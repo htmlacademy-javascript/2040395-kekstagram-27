@@ -14,15 +14,21 @@ const showModal = () => {
   document.body.classList.add('modal-open');
 };
 
-const hideModal = () => {
+const closeModal = () => {
   uploadModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+};
+
+const hideModal = () => {
+  closeModal();
   resetScale();
   resetEffects();
   form.reset();
 };
 
-const isFieldFocused = () => document.activeElement === inputHashtag || document.activeElement === inputComment;
+const isFieldFocused = () =>
+  document.activeElement === inputHashtag ||
+  document.activeElement === inputComment;
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt) && !isFieldFocused()) {
@@ -46,4 +52,4 @@ fileInput.addEventListener('change', () => {
 
 form.addEventListener('change', onFormChange);
 
-export { hideModal };
+export { hideModal, closeModal };

@@ -1,5 +1,5 @@
 import { sendData } from './api.js';
-import { showErrorMessage, showSuccessMessage } from './util.js';
+import { showMessageError, showMessageSuccess } from './message.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const HASHTAG_MAX_LENGTH = 20;
@@ -10,13 +10,17 @@ const form = uploadImg.querySelector('#upload-select-image');
 const inputHashtag = uploadImg.querySelector('.text__hashtags');
 const submitButton = uploadImg.querySelector('.img-upload__submit');
 
-const pristine = new Pristine(form, {
-  classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--invalid',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'error-message'
-}, true);
+const pristine = new Pristine(
+  form,
+  {
+    classTo: 'img-upload__field-wrapper',
+    errorClass: 'img-upload__field-wrapper--invalid',
+    errorTextParent: 'img-upload__field-wrapper',
+    errorTextTag: 'div',
+    errorTextClass: 'error-message',
+  },
+  true
+);
 
 const getArrHashtags = (value) => value.split(' ');
 
@@ -32,28 +36,35 @@ const areHashtagsValid = (value) => {
 
 const isHashtagsCountValid = (value) => {
   const arrHashtags = getArrHashtags(value);
-  return (arrHashtags.length <= HASHTAG_MAX_COUNT);
+  return arrHashtags.length <= HASHTAG_MAX_COUNT;
 };
-
 const isHashtagsUnique = (value) => {
   const arrHashtags = getArrHashtags(value);
-  const getLowercaseHashtag = arrHashtags.map((hashtag) => hashtag.toLowerCase());
+  const getLowercaseHashtag = arrHashtags.map((hashtag) =>
+    hashtag.toLowerCase()
+  );
   const set = new Set(getLowercaseHashtag);
-  return (set.size === getLowercaseHashtag.length);
+  return set.size === getLowercaseHashtag.length;
 };
 
-pristine.addValidator(inputHashtag, isHashtagsCountValid,
+pristine.addValidator(
+  inputHashtag,
+  isHashtagsCountValid,
   `Количество хэш-тегов не более ${HASHTAG_MAX_COUNT}`
 );
 
-pristine.addValidator(inputHashtag, areHashtagsValid,
+pristine.addValidator(
+  inputHashtag,
+  areHashtagsValid,
   `- хэш-тег должен начинаться с решетки (#)<br>
     - хэш-тег не может содержать спецсимволы, эмодзи и знаки пунктуации<br>
     - между хэш-тегами должны стоять пробелы<br>
     - максимальное количество символов в хэш-теге - ${HASHTAG_MAX_LENGTH}`
 );
 
-pristine.addValidator(inputHashtag, isHashtagsUnique,
+pristine.addValidator(
+  inputHashtag,
+  isHashtagsUnique,
   'Каждый хэш-тег должен быть уникальным'
 );
 
@@ -67,27 +78,31 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const setFormSubmit = (onSuccess) => {
+const setFormSubmit = (onSuccess, onError) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
     const isValid = pristine.validate();
+
     if (isValid) {
       blockSubmitButton();
       sendData(
         () => {
           onSuccess();
-          showSuccessMessage();
+          showMessageSuccess();
           unblockSubmitButton();
         },
         () => {
-          showErrorMessage('Не удалось отправить форму');
+          onError();
+          showMessageError();
           unblockSubmitButton();
         },
-        new FormData(evt.target),
+        new FormData(evt.target)
       );
     }
   });
 };
 
 export { setFormSubmit };
+
 
