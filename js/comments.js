@@ -3,7 +3,7 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 
 const createComment = (photo) => {
   const comment = commentTemplate.cloneNode(true);
-  const {avatar, name, message} = photo;
+  const { avatar, name, message } = photo;
   const avatarPicture = comment.querySelector('.social__picture');
 
   avatarPicture.src = avatar;
