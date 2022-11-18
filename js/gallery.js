@@ -15,6 +15,7 @@ const renderPictureContent = (photos) => {
     picture.querySelector('.picture__likes').textContent = likes;
     picture.querySelector('.picture__comments').textContent = comments.length;
     picture.addEventListener('click', () => renderBigPicture(url, likes, comments, description));
+
     return picture;
   });
 

@@ -1,4 +1,4 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, removeEventListener } from './util.js';
 import { resetScale } from './scale.js';
 import { onFormChange, resetEffects } from './effects.js';
 
@@ -30,26 +30,49 @@ const isFieldFocused = () =>
   document.activeElement === inputHashtag ||
   document.activeElement === inputComment;
 
-const onPopupEscKeydown = (evt) => {
-  if (isEscapeKey(evt) && !isFieldFocused()) {
-    evt.preventDefault();
-    hideModal();
-    document.removeEventListener('keydown', onPopupEscKeydown);
+const onPopup = (evt) => {
+  switch (evt.type) {
+    case 'click':
+      hideModal();
+      removeEventListener(cancelButton, 'click', onPopup);
+      removeEventListener(document, 'keydown', onPopup);
+      break;
+    case 'keydown':
+      if (isEscapeKey(evt) && !isFieldFocused()) {
+        evt.preventDefault();
+        hideModal();
+        removeEventListener(document, 'keydown', onPopup);
+        removeEventListener(cancelButton, 'click', onPopup);
+      }
+      break;
+    default:
+      hideModal();
+      removeEventListener(document, 'keydown', onPopup);
+      removeEventListener(cancelButton, 'click', onPopup);
+      break;
   }
 };
 
-const onCancelButtonClick = () => {
-  hideModal();
-  cancelButton.removeEventListener('click', onCancelButtonClick);
-  document.removeEventListener('keydown', onPopupEscKeydown);
+const openModalAndAddEscapeListener = () => {
+  showModal();
+  document.addEventListener('keydown', onPopup);
+};
+
+const closeModalAndRemoveEscapeListener = () => {
+  closeModal();
+  removeEventListener(document, 'keydown', onPopup);
 };
 
 fileInput.addEventListener('change', () => {
   showModal();
-  cancelButton.addEventListener('click', onCancelButtonClick);
-  document.addEventListener('keydown', onPopupEscKeydown);
+  cancelButton.addEventListener('click', onPopup);
+  document.addEventListener('keydown', onPopup);
 });
 
 form.addEventListener('change', onFormChange);
 
-export { hideModal, closeModal };
+export {
+  hideModal,
+  closeModalAndRemoveEscapeListener,
+  openModalAndAddEscapeListener
+};

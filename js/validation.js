@@ -104,5 +104,3 @@ const setFormSubmit = (onSuccess, onError) => {
 };
 
 export { setFormSubmit };
-
-

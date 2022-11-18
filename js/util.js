@@ -13,8 +13,7 @@ const removeEventListener = (removeEventListenerWhere, typeOfEvent, onEventFunct
   element.removeEventListener(typeOfEvent, onEventFunction);
 };
 
-const createMessageContainer = (message) => {
-  const alertContainer = document.createElement('div');
+const createMessageStyle = (alertContainer, message) => {
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '0';
@@ -26,15 +25,25 @@ const createMessageContainer = (message) => {
   alertContainer.style.fontWeight = '700';
   alertContainer.style.color = 'white';
   alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'rgba(255, 61, 61, 0.9)';
+  alertContainer.style.backgroundColor = 'rgb(255 61 61 / 90%)';
   alertContainer.style.width = '600px';
   alertContainer.style.height = '600px';
   alertContainer.style.margin = '0 auto';
-
   alertContainer.textContent = message;
+};
+
+const createMessageContainer = (message) => {
+  const alertContainer = document.createElement('div');
+  createMessageStyle(alertContainer, message);
   alertContainer.classList.add('loading', 'hidden');
   document.body.append(alertContainer);
 };
 
-export { isEscapeKey, removeEventListener, getInitialCommentStateCount, COMMENT_STEP_COUNT, createMessageContainer};
-
+export {
+  isEscapeKey,
+  removeEventListener,
+  getInitialCommentStateCount,
+  COMMENT_STEP_COUNT,
+  createMessageStyle,
+  createMessageContainer
+};

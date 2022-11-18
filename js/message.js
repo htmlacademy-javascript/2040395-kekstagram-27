@@ -1,17 +1,14 @@
-import { isEscapeKey, removeEventListener, createMessageContainer } from './util.js';
+import { openModalAndAddEscapeListener } from './form.js';
+import {
+  isEscapeKey,
+  removeEventListener,
+  createMessageContainer
+} from './util.js';
 
-const body = document.querySelector('body');
-const uploadImg = document.querySelector('.img-upload');
-const uploadModal = uploadImg.querySelector('.img-upload__overlay');
 const error = document.querySelector('.error');
 const success = document.querySelector('.success');
 const errorButton = document.querySelector('.error__button');
 const successButton = document.querySelector('.success__button');
-
-const openModalForResendData = () => {
-  uploadModal.classList.remove('hidden');
-  body.classList.add('modal-open');
-};
 
 const closeMessages = () => {
   error.classList.add('hidden');
@@ -20,7 +17,7 @@ const closeMessages = () => {
 
 const onCloseMessageError = () => {
   error.classList.add('hidden');
-  openModalForResendData();
+  openModalAndAddEscapeListener();
 };
 
 const onCloseMessageSuccess = () => {
@@ -28,10 +25,12 @@ const onCloseMessageSuccess = () => {
 };
 
 const onMessage = (evt) => {
+  const parentNodeElement = evt.target.parentNode;
+
   switch (evt.type) {
     case 'click':
       if (error.classList.contains('hidden')) {
-        if (evt.target.classList.contains('success__inner')) {
+        if (parentNodeElement.classList.contains('success__inner') || parentNodeElement.classList.contains('success')) {
           return;
         }
         onCloseMessageSuccess();
@@ -41,7 +40,7 @@ const onMessage = (evt) => {
         return;
       }
       if (success.classList.contains('hidden')) {
-        if (evt.target.classList.contains('error__inner')) {
+        if (parentNodeElement.classList.contains('error__inner') || parentNodeElement.classList.contains('error')) {
           return;
         }
         onCloseMessageError();
