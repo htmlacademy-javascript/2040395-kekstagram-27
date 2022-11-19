@@ -1,6 +1,8 @@
 import { shuffleArray, debounce } from './util.js';
 import { renderPictureContent, removePhotos } from './gallery.js';
 
+const RANDOM_IMAGE_MAX = 10;
+
 const imageFilters = document.querySelector('.img-filters');
 const filterButton = document.querySelectorAll('.img-filters__button');
 const defaultButton = document.querySelector('#filter-default');
@@ -26,7 +28,7 @@ const filterByCommentsNumber = (images) => {
 
 
 const filterRandom = (images) => {
-  const randomImages = images.slice(0, 10);
+  const randomImages = images.slice(0, RANDOM_IMAGE_MAX);
   return shuffleArray(randomImages);
 };
 
