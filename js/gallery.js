@@ -22,4 +22,11 @@ const renderPictureContent = (photos) => {
   userPhoto.append(...content);
 };
 
-export { renderPictureContent };
+const removePhotos = () => {
+  const images = document.querySelectorAll('.picture');
+  if (images) {
+    images.forEach((image) => image.remove());
+  }
+};
+
+export { renderPictureContent, removePhotos };
