@@ -39,11 +39,37 @@ const createMessageContainer = (message) => {
   document.body.append(alertContainer);
 };
 
+const shuffleArray = (images) => {
+  let currentIndex = images.length, randomIndex, temporaryValue;
+
+  while (currentIndex !== 0) {
+
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = images[currentIndex];
+    images[currentIndex] = images[randomIndex];
+    images[randomIndex] = temporaryValue;
+  }
+
+  return images;
+};
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 export {
   isEscapeKey,
   removeEventListener,
   getInitialCommentStateCount,
   COMMENT_STEP_COUNT,
   createMessageStyle,
-  createMessageContainer
+  createMessageContainer,
+  shuffleArray,
+  debounce
 };
