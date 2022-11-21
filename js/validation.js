@@ -3,7 +3,7 @@ import { showMessageError, showMessageSuccess } from './message.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const HASHTAG_MAX_LENGTH = 20;
-const isHashtagValidRegex = /^#[a-zа-яё0-9]{1,19}$/;
+const isHashtagValidRegex = /^#[A-Za-zА-яа-яЕё0-9]{1,19}$/;
 
 const uploadImg = document.querySelector('.img-upload');
 const form = uploadImg.querySelector('#upload-select-image');
