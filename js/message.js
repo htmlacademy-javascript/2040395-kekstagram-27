@@ -5,23 +5,23 @@ import {
   createMessageContainer
 } from './util.js';
 
-const error = document.querySelector('.error');
-const success = document.querySelector('.success');
-const errorButton = document.querySelector('.error__button');
-const successButton = document.querySelector('.success__button');
+const errorElement = document.querySelector('.error');
+const successElement = document.querySelector('.success');
+const errorButtonElement = document.querySelector('.error__button');
+const successButtonElement = document.querySelector('.success__button');
 
 const closeMessages = () => {
-  error.classList.add('hidden');
-  success.classList.add('hidden');
+  errorElement.classList.add('hidden');
+  successElement.classList.add('hidden');
 };
 
 const onCloseMessageError = () => {
-  error.classList.add('hidden');
+  errorElement.classList.add('hidden');
   openModalAndAddEscapeListener();
 };
 
 const onCloseMessageSuccess = () => {
-  success.classList.add('hidden');
+  successElement.classList.add('hidden');
 };
 
 const onMessage = (evt) => {
@@ -29,22 +29,22 @@ const onMessage = (evt) => {
 
   switch (evt.type) {
     case 'click':
-      if (error.classList.contains('hidden')) {
+      if (errorElement.classList.contains('hidden')) {
         if (parentNodeElement.classList.contains('success__inner') || parentNodeElement.classList.contains('success')) {
           return;
         }
         onCloseMessageSuccess();
-        removeEventListener(successButton, 'click', onCloseMessageSuccess);
+        removeEventListener(successButtonElement, 'click', onCloseMessageSuccess);
         removeEventListener(document, 'keydown', onMessage);
         removeEventListener(document, 'click', onMessage);
         return;
       }
-      if (success.classList.contains('hidden')) {
+      if (successElement.classList.contains('hidden')) {
         if (parentNodeElement.classList.contains('error__inner') || parentNodeElement.classList.contains('error')) {
           return;
         }
         onCloseMessageError();
-        removeEventListener(errorButton, 'click', onCloseMessageError);
+        removeEventListener(errorButtonElement, 'click', onCloseMessageError);
         removeEventListener(document, 'keydown', onMessage);
         removeEventListener(document, 'click', onMessage);
       }
@@ -52,16 +52,16 @@ const onMessage = (evt) => {
     case 'keydown':
       if (isEscapeKey(evt)) {
         evt.preventDefault();
-        if (error.classList.contains('hidden')) {
+        if (errorElement.classList.contains('hidden')) {
           onCloseMessageSuccess();
-          removeEventListener(successButton, 'click', onCloseMessageSuccess);
+          removeEventListener(successButtonElement, 'click', onCloseMessageSuccess);
           removeEventListener(document, 'keydown', onMessage);
           removeEventListener(document, 'click', onMessage);
           return;
         }
-        if (success.classList.contains('hidden')) {
+        if (successElement.classList.contains('hidden')) {
           onCloseMessageError();
-          removeEventListener(errorButton, 'click', onCloseMessageError);
+          removeEventListener(errorButtonElement, 'click', onCloseMessageError);
           removeEventListener(document, 'keydown', onMessage);
           removeEventListener(document, 'click', onMessage);
         }
@@ -69,8 +69,8 @@ const onMessage = (evt) => {
       break;
     default:
       closeMessages();
-      removeEventListener(successButton, 'click', onCloseMessageSuccess);
-      removeEventListener(errorButton, 'click', onCloseMessageError);
+      removeEventListener(successButtonElement, 'click', onCloseMessageSuccess);
+      removeEventListener(errorButtonElement, 'click', onCloseMessageError);
       removeEventListener(document, 'keydown', onMessage);
       removeEventListener(document, 'click', onMessage);
       break;
@@ -78,15 +78,15 @@ const onMessage = (evt) => {
 };
 
 const showMessageError = () => {
-  error.classList.remove('hidden');
-  errorButton.addEventListener('click', onCloseMessageError);
+  errorElement.classList.remove('hidden');
+  errorButtonElement.addEventListener('click', onCloseMessageError);
   document.addEventListener('keydown', onMessage);
   document.addEventListener('click', onMessage);
 };
 
 const showMessageSuccess = () => {
-  success.classList.remove('hidden');
-  successButton.addEventListener('click', onCloseMessageSuccess);
+  successElement.classList.remove('hidden');
+  successButtonElement.addEventListener('click', onCloseMessageSuccess);
   document.addEventListener('keydown', onMessage);
   document.addEventListener('click', onMessage);
 };

@@ -5,7 +5,7 @@ import './form.js';
 import './validation.js';
 import './scale.js';
 import './effects.js';
-import { hideModal, closeModalAndRemoveEscapeListener } from './form.js';
+import { hideModalAndRemoveAllListener, closeModalAndRemoveEscapeListener } from './form.js';
 import { setFormSubmit } from './validation.js';
 import { renderPictureContent } from './gallery.js';
 import { getData } from './api.js';
@@ -22,4 +22,4 @@ getData(
   }
 );
 
-setFormSubmit(hideModal, closeModalAndRemoveEscapeListener);
+setFormSubmit(hideModalAndRemoveAllListener, closeModalAndRemoveEscapeListener);

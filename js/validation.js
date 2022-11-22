@@ -5,13 +5,13 @@ const HASHTAG_MAX_COUNT = 5;
 const HASHTAG_MAX_LENGTH = 20;
 const isHashtagValidRegex = /^#[A-Za-zА-яа-яЕё0-9]{1,19}$/;
 
-const uploadImg = document.querySelector('.img-upload');
-const form = uploadImg.querySelector('#upload-select-image');
-const inputHashtag = uploadImg.querySelector('.text__hashtags');
-const submitButton = uploadImg.querySelector('.img-upload__submit');
+const uploadImgElement = document.querySelector('.img-upload');
+const formElement = uploadImgElement.querySelector('#upload-select-image');
+const hashtagInputElement = uploadImgElement.querySelector('.text__hashtags');
+const submitButtonElement = uploadImgElement.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(
-  form,
+  formElement,
   {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--invalid',
@@ -38,6 +38,7 @@ const isHashtagsCountValid = (value) => {
   const arrHashtags = getArrHashtags(value);
   return arrHashtags.length <= HASHTAG_MAX_COUNT;
 };
+
 const isHashtagsUnique = (value) => {
   const arrHashtags = getArrHashtags(value);
   const getLowercaseHashtag = arrHashtags.map((hashtag) =>
@@ -48,13 +49,13 @@ const isHashtagsUnique = (value) => {
 };
 
 pristine.addValidator(
-  inputHashtag,
+  hashtagInputElement,
   isHashtagsCountValid,
   `Количество хэш-тегов не более ${HASHTAG_MAX_COUNT}`
 );
 
 pristine.addValidator(
-  inputHashtag,
+  hashtagInputElement,
   areHashtagsValid,
   `- хэш-тег должен начинаться с решетки (#)<br>
     - хэш-тег не может содержать спецсимволы, эмодзи и знаки пунктуации<br>
@@ -63,23 +64,23 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  inputHashtag,
+  hashtagInputElement,
   isHashtagsUnique,
   'Каждый хэш-тег должен быть уникальным'
 );
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Идет отправка...';
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Идет отправка...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 };
 
 const setFormSubmit = (onSuccess, onError) => {
-  form.addEventListener('submit', (evt) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();

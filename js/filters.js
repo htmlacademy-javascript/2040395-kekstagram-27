@@ -2,17 +2,15 @@ import { shuffleArray, debounce } from './util.js';
 import { renderPictureContent, removePhotos } from './gallery.js';
 
 const RANDOM_IMAGE_MAX = 10;
+const TIMEOUT_DELAY = 500;
 
-const imageFilters = document.querySelector('.img-filters');
-const filterButtons = document.querySelectorAll('.img-filters__button');
-const defaultButton = document.querySelector('#filter-default');
-const randomButton = document.querySelector('#filter-random');
-const discussedButton = document.querySelector('#filter-discussed');
+const imageFiltersElement = document.querySelector('.img-filters');
+const filterButtonElements = document.querySelectorAll('.img-filters__button');
+const defaultButtonElement = document.querySelector('#filter-default');
+const randomButtonElement = document.querySelector('#filter-random');
+const discussedButtonElement = document.querySelector('#filter-discussed');
 
-const getImageRank = (image) => {
-  const rank = image.comments.length;
-  return rank;
-};
+const getImageRank = (image) => image.comments.length;
 
 const compareImages = (imageA, imageB) => {
   const rankA = getImageRank(imageA);
@@ -31,22 +29,19 @@ const filterRandom = (images) => {
   return randomImages.slice(0, RANDOM_IMAGE_MAX);
 };
 
-const filterDefault = (images) => {
-  const defaultImages = images.slice();
-  return defaultImages;
-};
+const filterDefault = (images) => images.slice();
 
 const onFilterButton = (button, photos) => {
   switch (button) {
-    case discussedButton:
+    case discussedButtonElement:
       removePhotos();
       renderPictureContent(filterByCommentsNumber(photos));
       break;
-    case randomButton:
+    case randomButtonElement:
       removePhotos();
       renderPictureContent(filterRandom(photos));
       break;
-    case defaultButton:
+    case defaultButtonElement:
       removePhotos();
       renderPictureContent(filterDefault(photos));
       break;
@@ -62,7 +57,7 @@ const onFilterButtonClick = (button, photos) => {
 
   button.addEventListener('click', () => {
     if (!button.classList.contains(active)) {
-      filterButtons.forEach((item) => {
+      filterButtonElements.forEach((item) => {
         item.classList.remove(active);
       });
 
@@ -73,8 +68,8 @@ const onFilterButtonClick = (button, photos) => {
 };
 
 const filterPictureContent = (photos) => {
-  imageFilters.classList.remove('img-filters--inactive');
-  filterButtons.forEach((button) => debounce(onFilterButtonClick(button, photos)));
+  imageFiltersElement.classList.remove('img-filters--inactive');
+  filterButtonElements.forEach((button) => debounce(onFilterButtonClick(button, photos), TIMEOUT_DELAY));
 };
 
 export { filterPictureContent };
