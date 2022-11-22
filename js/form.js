@@ -2,20 +2,20 @@ import { isEscapeKey, removeEventListener } from './util.js';
 import { resetScale } from './scale.js';
 import { onFormChange, resetEffects } from './effects.js';
 
-const form = document.querySelector('.img-upload__form');
-const fileInput = document.querySelector('#upload-file');
-const uploadModal = document.querySelector('.img-upload__overlay');
-const cancelButton = document.querySelector('#upload-cancel');
-const inputHashtag = form.querySelector('.text__hashtags');
-const inputComment = form.querySelector('.text__description');
+const formElement = document.querySelector('.img-upload__form');
+const fileInputElement = document.querySelector('#upload-file');
+const uploadModalElement = document.querySelector('.img-upload__overlay');
+const cancelButtonElement = document.querySelector('#upload-cancel');
+const inputHashtagElement = formElement.querySelector('.text__hashtags');
+const inputCommentElement = formElement.querySelector('.text__description');
 
 const showModal = () => {
-  uploadModal.classList.remove('hidden');
+  uploadModalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
 };
 
 const closeModal = () => {
-  uploadModal.classList.add('hidden');
+  uploadModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
 
@@ -23,18 +23,18 @@ const hideModal = () => {
   closeModal();
   resetScale();
   resetEffects();
-  form.reset();
+  formElement.reset();
 };
 
 const isFieldFocused = () =>
-  document.activeElement === inputHashtag ||
-  document.activeElement === inputComment;
+  document.activeElement === inputHashtagElement ||
+  document.activeElement === inputCommentElement;
 
 const onPopup = (evt) => {
   switch (evt.type) {
     case 'click':
       hideModal();
-      removeEventListener(cancelButton, 'click', onPopup);
+      removeEventListener(cancelButtonElement, 'click', onPopup);
       removeEventListener(document, 'keydown', onPopup);
       break;
     case 'keydown':
@@ -42,13 +42,13 @@ const onPopup = (evt) => {
         evt.preventDefault();
         hideModal();
         removeEventListener(document, 'keydown', onPopup);
-        removeEventListener(cancelButton, 'click', onPopup);
+        removeEventListener(cancelButtonElement, 'click', onPopup);
       }
       break;
     default:
       hideModal();
       removeEventListener(document, 'keydown', onPopup);
-      removeEventListener(cancelButton, 'click', onPopup);
+      removeEventListener(cancelButtonElement, 'click', onPopup);
       break;
   }
 };
@@ -63,16 +63,22 @@ const closeModalAndRemoveEscapeListener = () => {
   removeEventListener(document, 'keydown', onPopup);
 };
 
-fileInput.addEventListener('change', () => {
+const hideModalAndRemoveAllListener = () => {
+  hideModal();
+  removeEventListener(document, 'keydown', onPopup);
+  removeEventListener(cancelButtonElement, 'click', onPopup);
+};
+
+fileInputElement.addEventListener('change', () => {
   showModal();
-  cancelButton.addEventListener('click', onPopup);
+  cancelButtonElement.addEventListener('click', onPopup);
   document.addEventListener('keydown', onPopup);
 });
 
-form.addEventListener('change', onFormChange);
+formElement.addEventListener('change', onFormChange);
 
 export {
-  hideModal,
+  hideModalAndRemoveAllListener,
   closeModalAndRemoveEscapeListener,
   openModalAndAddEscapeListener
 };

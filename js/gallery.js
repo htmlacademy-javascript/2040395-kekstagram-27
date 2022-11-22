@@ -1,7 +1,7 @@
 import { renderBigPicture } from './big-picture.js';
 
-const userPhoto = document.querySelector('.pictures');
-const userPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const userPhotoElement = document.querySelector('.pictures');
+const userPhotoTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 
 const renderPictureContent = (photos) => {
   const content = photos.map(({
@@ -10,7 +10,7 @@ const renderPictureContent = (photos) => {
     comments,
     description
   }) => {
-    const picture = userPhotoTemplate.cloneNode(true);
+    const picture = userPhotoTemplateElement.cloneNode(true);
     picture.querySelector('.picture__img').src = url;
     picture.querySelector('.picture__likes').textContent = likes;
     picture.querySelector('.picture__comments').textContent = comments.length;
@@ -19,7 +19,7 @@ const renderPictureContent = (photos) => {
     return picture;
   });
 
-  userPhoto.append(...content);
+  userPhotoElement.append(...content);
 };
 
 const removePhotos = () => {

@@ -9,8 +9,7 @@ const getInitialCommentStateCount = (count = 0) => {
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const removeEventListener = (removeEventListenerWhere, typeOfEvent, onEventFunction) => {
-  const element = removeEventListenerWhere;
-  element.removeEventListener(typeOfEvent, onEventFunction);
+  removeEventListenerWhere.removeEventListener(typeOfEvent, onEventFunction);
 };
 
 const createMessageStyle = (alertContainer, message) => {
@@ -55,7 +54,7 @@ const shuffleArray = (images) => {
   return images;
 };
 
-const debounce = (callback, timeoutDelay = 500) => {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

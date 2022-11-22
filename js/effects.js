@@ -50,14 +50,14 @@ const EFFECTS = [
 const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
 
-const image = document.querySelector('.img-upload__preview img');
-const slider = document.querySelector('.effect-level__slider');
-const effectInput = document.querySelector('.effect-level__value');
+const imageElement = document.querySelector('.img-upload__preview img');
+const sliderElement = document.querySelector('.effect-level__slider');
+const effectInputElement = document.querySelector('.effect-level__value');
 
 const isDefaultEffect = () => chosenEffect === DEFAULT_EFFECT;
 
 const updateSlider = () => {
-  slider.noUiSlider.updateOptions({
+  sliderElement.noUiSlider.updateOptions({
     range: {
       min: chosenEffect.min,
       max: chosenEffect.max,
@@ -66,14 +66,14 @@ const updateSlider = () => {
     step: chosenEffect.step,
   });
 
-  slider.classList.remove('hidden');
+  sliderElement.classList.remove('hidden');
 
   if (isDefaultEffect()) {
-    slider.classList.add('hidden');
+    sliderElement.classList.add('hidden');
   }
 };
 
-noUiSlider.create(slider, {
+noUiSlider.create(sliderElement, {
   range: {
     min: DEFAULT_EFFECT.min,
     max: DEFAULT_EFFECT.max,
@@ -92,16 +92,16 @@ const onFormChange = (evt) => {
 };
 
 const onSliderUpdate = () => {
-  image.style.filter = 'none';
-  image.className = '';
-  effectInput.value = '';
+  imageElement.style.filter = 'none';
+  imageElement.className = '';
+  effectInputElement.value = '';
   if (isDefaultEffect()) {
     return;
   }
-  const sliderValue = slider.noUiSlider.get();
-  image.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
-  image.classList.add(`effects__preview--${chosenEffect.name}`);
-  effectInput.value = sliderValue;
+  const sliderValue = sliderElement.noUiSlider.get();
+  imageElement.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
+  imageElement.classList.add(`effects__preview--${chosenEffect.name}`);
+  effectInputElement.value = sliderValue;
 };
 
 const resetEffects = () => {
@@ -111,6 +111,6 @@ const resetEffects = () => {
 
 updateSlider();
 
-slider.noUiSlider.on('update', onSliderUpdate);
+sliderElement.noUiSlider.on('update', onSliderUpdate);
 
 export { onFormChange, resetEffects };

@@ -1,33 +1,27 @@
 import { COMMENT_STEP_COUNT, getInitialCommentStateCount } from './util.js';
 
-const bigPicture = document.querySelector('.big-picture');
-const countSocialComment = bigPicture.querySelector('.social__comment-count');
-const socialCommentLoaderButton = bigPicture.querySelector('.social__comments-loader');
+const bigPictureElement = document.querySelector('.big-picture');
+const countSocialCommentElement = bigPictureElement.querySelector('.social__comment-count');
+const socialCommentLoaderButtonElement = bigPictureElement.querySelector('.social__comments-loader');
 
 let countInitialCommentState = getInitialCommentStateCount(0);
 const countCommentStep = COMMENT_STEP_COUNT;
 
-const getCommentsData = () => {
-  const socialComments = Array.from(bigPicture.querySelectorAll('.social__comment'));
-  return socialComments;
-};
+const getCommentsData = () => Array.from(bigPictureElement.querySelectorAll('.social__comment'));
 
-const getHiddenCommentsData = () => {
-  const socialHiddenComments = Array.from(bigPicture.querySelectorAll('.social__comment.hidden'));
-  return socialHiddenComments;
-};
+const getHiddenCommentsData = () => Array.from(bigPictureElement.querySelectorAll('.social__comment.hidden'));
 
 const createSocialCommentsCounterTemplate = (countInitCommentStep) => (
   `${countInitCommentStep} из <span class="comments-count"> ${getCommentsData().length} </span> комментариев`
 );
 
 const clearCommentMarkupCounterState = () => {
-  countSocialComment.textContent = '';
-  countSocialComment.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(countCommentStep));
+  countSocialCommentElement.textContent = '';
+  countSocialCommentElement.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(countCommentStep));
 };
 
 const hideSocialCommentsLoader = () => {
-  socialCommentLoaderButton.classList.add('hidden');
+  socialCommentLoaderButtonElement.classList.add('hidden');
   countInitialCommentState = getInitialCommentStateCount(0);
 };
 
@@ -38,8 +32,8 @@ const onSocialComments = () => {
 
   countInitialCommentState += countCommentStep;
 
-  countSocialComment.textContent = '';
-  countSocialComment.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(arrSocialComments.length - getHiddenCommentsData().length));
+  countSocialCommentElement.textContent = '';
+  countSocialCommentElement.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(arrSocialComments.length - getHiddenCommentsData().length));
 
   if (countInitialCommentState === arrSocialComments.length || countInitialCommentState > arrSocialComments.length) {
     hideSocialCommentsLoader();
@@ -49,8 +43,8 @@ const onSocialComments = () => {
 const uploadMoreComment = () => {
   const arrSocialComments = getCommentsData();
   if (((getCommentsData().length < countCommentStep) || (getCommentsData().length === countCommentStep)) && (getHiddenCommentsData().length === 0)) {
-    countSocialComment.textContent = '';
-    countSocialComment.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(getCommentsData().length));
+    countSocialCommentElement.textContent = '';
+    countSocialCommentElement.insertAdjacentHTML('afterbegin', createSocialCommentsCounterTemplate(getCommentsData().length));
     hideSocialCommentsLoader();
     return;
   }
@@ -62,7 +56,7 @@ const uploadMoreComment = () => {
 };
 
 const addEventListenerSocialCommentsLoader = () => {
-  socialCommentLoaderButton.addEventListener('click', onSocialComments);
+  socialCommentLoaderButtonElement.addEventListener('click', onSocialComments);
 };
 
 export {

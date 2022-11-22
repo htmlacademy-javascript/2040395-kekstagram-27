@@ -7,14 +7,14 @@ import {
   addEventListenerSocialCommentsLoader
 } from './more-comments.js';
 
-const body = document.querySelector('body');
-const bigPicture = document.querySelector('.big-picture');
-const cancelBigPictureButton = bigPicture.querySelector('.big-picture__cancel');
-const socialCommentLoaderButton = bigPicture.querySelector('.social__comments-loader');
+const bodyElement = document.querySelector('body');
+const bigPictureElement = document.querySelector('.big-picture');
+const cancelBigPictureButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
+const socialCommentLoaderButtonElement = bigPictureElement.querySelector('.social__comments-loader');
 
 const closeModal = () => {
-  bigPicture.classList.add('hidden');
-  body.classList.remove('modal-open');
+  bigPictureElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
 };
 
 const closeModalByEscape = (evt, typeOfEvent, handleEventFunction) => {
@@ -29,14 +29,14 @@ const onBigPicture = (evt) => {
   switch (evt.type) {
     case 'click':
       closeModal();
-      removeEventListener(cancelBigPictureButton, 'click', onBigPicture);
+      removeEventListener(cancelBigPictureButtonElement, 'click', onBigPicture);
       removeEventListener(document, 'keydown', onBigPicture);
-      removeEventListener(socialCommentLoaderButton, 'click', onSocialComments);
+      removeEventListener(socialCommentLoaderButtonElement, 'click', onSocialComments);
       clearCommentMarkupCounterState();
       break;
     case 'keydown':
       closeModalByEscape(evt, 'keydown', onBigPicture);
-      removeEventListener(socialCommentLoaderButton, 'click', onSocialComments);
+      removeEventListener(socialCommentLoaderButtonElement, 'click', onSocialComments);
       clearCommentMarkupCounterState();
       break;
     default:
@@ -46,18 +46,18 @@ const onBigPicture = (evt) => {
 };
 
 const renderBigPicture = ((url, likes, comments, description) => {
-  bigPicture.classList.remove('hidden');
-  socialCommentLoaderButton.classList.remove('hidden');
+  bigPictureElement.classList.remove('hidden');
+  socialCommentLoaderButtonElement.classList.remove('hidden');
 
-  cancelBigPictureButton.addEventListener('click', onBigPicture);
+  cancelBigPictureButtonElement.addEventListener('click', onBigPicture);
   document.addEventListener('keydown', onBigPicture);
 
-  bigPicture.querySelector('.big-picture__img').querySelector('img').src = url;
-  bigPicture.querySelector('.likes-count').textContent = likes;
-  bigPicture.querySelector('.comments-count').textContent = comments.length;
-  bigPicture.querySelector('.social__caption').textContent = description;
+  bigPictureElement.querySelector('.big-picture__img').querySelector('img').src = url;
+  bigPictureElement.querySelector('.likes-count').textContent = likes;
+  bigPictureElement.querySelector('.comments-count').textContent = comments.length;
+  bigPictureElement.querySelector('.social__caption').textContent = description;
 
-  body.classList.add('modal-open');
+  bodyElement.classList.add('modal-open');
 
   clearComments();
   renderComments(comments);
